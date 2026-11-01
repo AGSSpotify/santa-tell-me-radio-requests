@@ -1,0 +1,28 @@
+{
+  "updatedAt": "2026-11-01T16:55:41.800Z",
+  "billboard": {
+    "value": "Not charting",
+    "note": "Not present on the latest published Billboard Hot 100. Career peak: #5."
+  },
+  "spotifyUS": {
+    "value": "Below Top 200",
+    "note": "Not listed on Kworb’s latest U.S. weekly Spotify chart; no exact free weekly total is published."
+  },
+  "spotifyDaily": {
+    "value": "324,240",
+    "note": "Global Spotify streams reported by Kworb for 2026/10/31."
+  },
+  "sales": {
+    "value": "Not publicly reported",
+    "note": "No free source publishes verified total U.S. weekly song sales."
+  },
+  "forecast": {
+    "value": "No free forecast",
+    "note": "No rank is invented when a structured public prediction is unavailable."
+  },
+  "sources": {
+    "billboard": "https://www.billboard.com/charts/hot-100/",
+    "kworb": "https://kworb.net/spotify/artist/66CXWjxzNUsdJxJ2JdwvnR_songs.html"
+  },
+  "errors": []
+}
