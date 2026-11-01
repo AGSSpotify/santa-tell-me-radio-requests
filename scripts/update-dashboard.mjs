@@ -5,13 +5,15 @@ async function get(url){const r=await fetch(url,{headers});if(!r.ok)throw new Er
 const text=s=>s.replace(/<[^>]*>/g,' ').replace(/&amp;/g,'&').replace(/&#8217;/g,'’').replace(/\s+/g,' ').trim();
 const number=s=>Number(String(s).replace(/[^0-9]/g,''));
 
-async function billboard(){
-  const html=await get('https://www.billboard.com/charts/hot-100/');
-  const title='Santa Tell Me',i=html.toLowerCase().indexOf(title.toLowerCase());
-  if(i<0)return {value:'Not charting',note:'Not present on the latest published Billboard Hot 100. Career peak: #5.'};
-  const before=html.slice(Math.max(0,i-7000),i),matches=[...before.matchAll(/u-font-size-22[^>]*>\s*(\d{1,3})\s*</g)];
-  const position=matches.at(-1)?.[1];
-  return position?{value:`#${position}`,note:'Official position on the latest published Billboard Hot 100.'}:{value:'Charting',note:'The song appears on the latest Hot 100; the position parser needs review.'};
+async function radio(){
+  const html=await get('https://kworb.net/radio/');
+  const row=html.match(/<tr[^>]*>[\s\S]*?Ariana Grande\s*-\s*Santa Tell Me[\s\S]*?<\/tr>/i)?.[0]||'';
+  const cells=[...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map(m=>text(m[1]));
+  if(!cells.length)return {value:'Below Top 100',note:'Not listed in Kworb’s latest Billboard Radio Songs estimates.'};
+  const position=number(cells[0]);
+  const audience=cells[6]||'';
+  const change=cells[7]||'';
+  return {value:position?`#${position}`:'Listed',note:`Kworb radio estimate${audience?`: ${audience}M audience`:''}${change?` (${change} daily)`:''}.`};
 }
 
 async function kworb(){
@@ -34,17 +36,18 @@ async function kworb(){
 const previous=await fs.readFile(new URL('../dashboard-data.json',import.meta.url),'utf8').then(JSON.parse).catch(()=>null);
 const data={
   updatedAt:new Date().toISOString(),
-  billboard:previous?.billboard||{value:'Unavailable',note:'Waiting for the next update.'},
+  radio:previous?.radio||{value:'Unavailable',note:'Waiting for the next update.'},
   spotifyUS:previous?.spotifyUS||{value:'Unavailable',note:'Waiting for the next update.'},
   spotifyDaily:previous?.spotifyDaily||{value:'Unavailable',note:'Waiting for the next update.'},
-  sales:{value:'Not publicly reported',note:'No free source publishes verified total U.S. weekly song sales.'},
-  forecast:{value:'No free forecast',note:'No rank is invented when a structured public prediction is unavailable.'},
-  sources:{billboard:'https://www.billboard.com/charts/hot-100/',kworb:'https://kworb.net/spotify/artist/66CXWjxzNUsdJxJ2JdwvnR_songs.html'}
+  forecast:previous?.forecast||{value:'Watching',note:'Directional estimate based on Kworb streaming and radio signals.'},
+  sources:{radio:'https://kworb.net/radio/',kworb:'https://kworb.net/spotify/artist/66CXWjxzNUsdJxJ2JdwvnR_songs.html'}
 };
 const errors=[];
-try{data.billboard=await billboard()}catch(e){errors.push(String(e))}
+try{data.radio=await radio()}catch(e){errors.push(String(e))}
 try{const k=await kworb();data.spotifyUS=k.us;data.spotifyDaily=k.daily}catch(e){errors.push(String(e))}
+if(data.radio.value==='Below Top 100'&&data.spotifyUS.value==='Below Top 200')data.forecast={value:'Outside likely Top 100',note:'Kworb currently shows the song below its radio Top 100 and U.S. weekly Spotify Top 200; this is a directional estimate, not an official chart prediction.'};
+else if(data.radio.value.startsWith('#')||data.spotifyUS.value.startsWith('#'))data.forecast={value:'Chart momentum active',note:'At least one Kworb radio or U.S. streaming signal is charting. This is a directional estimate, not an official Billboard prediction.'};
 data.errors=errors;
 await fs.writeFile(new URL('../dashboard-data.json',import.meta.url),JSON.stringify(data,null,2)+'\n');
-console.log(JSON.stringify({updatedAt:data.updatedAt,billboard:data.billboard.value,spotifyUS:data.spotifyUS.value,spotifyDaily:data.spotifyDaily.value,errors}));
+console.log(JSON.stringify({updatedAt:data.updatedAt,radio:data.radio.value,spotifyUS:data.spotifyUS.value,spotifyDaily:data.spotifyDaily.value,forecast:data.forecast.value,errors}));
 
