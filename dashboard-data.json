@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-13T18:35:02.950Z",
+  "updatedAt": "2026-11-14T17:12:23.659Z",
   "radio": {
     "value": "Below Top 100",
     "note": "Not listed in Kworb’s latest Billboard Radio Songs estimates."
   },
   "spotifyUS": {
-    "value": "Below Top 200",
-    "note": "Not listed on Kworb’s latest U.S. weekly Spotify chart; no exact free weekly total is published."
+    "value": "#1",
+    "note": "Listed on Kworb's latest U.S. weekly Spotify chart with 7,245,709 streams."
   },
   "spotifyDaily": {
-    "value": "1,373,045",
-    "note": "Global Spotify streams reported by Kworb for 2026/11/12."
+    "value": "1,395,641",
+    "note": "Global Spotify streams reported by Kworb for 2026/11/13."
   },
   "forecast": {
-    "value": "Outside likely Top 100",
-    "note": "Kworb currently shows the song below its radio Top 100 and U.S. weekly Spotify Top 200; this is a directional estimate, not an official chart prediction."
+    "value": "Chart momentum active",
+    "note": "At least one Kworb radio or U.S. streaming signal is charting. This is a directional estimate, not an official Billboard prediction."
   },
   "sources": {
     "radio": "https://kworb.net/radio/",
