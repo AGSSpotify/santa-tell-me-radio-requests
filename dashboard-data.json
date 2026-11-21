@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-11-20T19:08:44.601Z",
+  "updatedAt": "2026-11-21T18:03:04.458Z",
   "radio": {
     "value": "Below Top 100",
     "note": "Not listed in Kworb’s latest Billboard Radio Songs estimates."
   },
   "spotifyUS": {
     "value": "#1",
-    "note": "Listed on Kworb's latest U.S. weekly Spotify chart with 7,245,709 streams."
+    "note": "Listed on Kworb's latest U.S. weekly Spotify chart with 6,764,950 streams."
   },
   "spotifyDaily": {
-    "value": "1,621,842",
-    "note": "Global Spotify streams reported by Kworb for 2026/11/19."
+    "value": "1,640,581",
+    "note": "Global Spotify streams reported by Kworb for 2026/11/20."
   },
   "forecast": {
     "value": "Chart momentum active",
